@@ -1,8 +1,9 @@
 package com.dity.ssm.config;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,15 +14,92 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAspect {
 
+    private Logger logger = LoggerFactory.getLogger(LogAspect.class);
+
+    /**
+     * 配置了 前置 返回 后置 异常通知
+     * 没有异常时
+     *   17:58:09.467 [main] INFO com.dity.ssm.config.LogAspect - aop前置通知
+         17:58:09.467 [main] INFO com.dity.ssm.service.impl.UserServiceImpl - 查询用户姓名
+         17:58:09.467 [main] INFO com.dity.ssm.config.LogAspect - aop后置通知
+         17:58:09.468 [main] INFO com.dity.ssm.config.LogAspect - aop返回通知
+     * 当出现异常时
+     *  17:54:00.224 [main] INFO com.dity.ssm.config.LogAspect - aop前置通知
+        17:54:00.224 [main] INFO com.dity.ssm.service.impl.UserServiceImpl - 查询用户姓名
+        17:54:00.225 [main] INFO com.dity.ssm.config.LogAspect - aop后置通知
+        17:54:00.225 [main] INFO com.dity.ssm.config.LogAspect - aop异常通知
+
+     配置了环绕通知后
+     18:10:12.306 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知前置
+     18:10:12.306 [main] INFO com.dity.ssm.config.LogAspect - aop前置通知
+     18:10:12.306 [main] INFO com.dity.ssm.service.impl.UserServiceImpl - 查询用户姓名
+     18:10:12.306 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知后置
+     18:10:12.306 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知返回
+     18:10:12.306 [main] INFO com.dity.ssm.config.LogAspect - aop后置通知
+     18:10:12.307 [main] INFO com.dity.ssm.config.LogAspect - aop返回通知
+
+
+     当配置了两个切面的环绕通知时
+
+     18:28:48.546 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知前置
+     18:28:48.547 [main] INFO com.dity.ssm.config.TimeAspect - 时间切面前置
+     18:28:48.547 [main] INFO com.dity.ssm.service.impl.UserServiceImpl - 查询用户姓名
+     18:28:48.547 [main] INFO com.dity.ssm.config.TimeAspect - 时间切面后置
+     18:28:48.547 [main] INFO com.dity.ssm.config.TimeAspect - 时间切面返回
+     18:28:48.547 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知后置
+     18:28:48.547 [main] INFO com.dity.ssm.config.LogAspect - aop环绕通知返回
+     */
+
     /**
      * 定义切入点表达式
      */
-    @Pointcut("execution(* com.dity.ssm.controller.*.*(..))")
+    @Pointcut("execution(* com.dity.ssm.service.impl.*.*(..))")
     public void jp(){}
 
-    @Before("jp()")
-    public void before(){
-        System.out.println("前置切面成功了...");
+    /**
+     * 前置通知 方法执行之前运行
+     */
+    @Before("jp() && args(name)")
+    public void before(String name){
+        logger.info("aop前置通知,"+name);
+    }
+
+    /**
+     * 返回通知 方法正常返回后运行
+     */
+//    @AfterReturning("jp()")
+    public void afterReturning(){
+        logger.info("aop返回通知");
+    }
+
+    /**
+     * 后置通知 方法执行后运行 在返回通知之前运行
+     */
+//    @After("jp()")
+    public void after(){
+        logger.info("aop后置通知");
+    }
+
+    /**
+     * 异常通知 方法执行出现异常后运行
+     */
+//    @AfterThrowing("jp()")
+    public void throwException(){
+        logger.info("aop异常通知");
+    }
+
+//    @Around("jp()")
+    public void around(ProceedingJoinPoint joinPoint){
+        logger.info("aop环绕通知前置.");
+        try {
+            joinPoint.proceed();
+        }catch (Throwable e){
+            logger.info("aop环绕通知异常");
+        }finally {
+            logger.info("aop环绕通知后置");
+        }
+        logger.info("aop环绕通知返回");
+
     }
 
 }
