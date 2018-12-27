@@ -1,8 +1,10 @@
 package com.dity.ssm.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-@XmlRootElement(name="User")
+//@XmlRootElement(name="User")
 public class User {
 
     private long id;
@@ -11,6 +13,7 @@ public class User {
     private String username;
     private String role;
     private int status;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date regTime;
     private String regIp;
 

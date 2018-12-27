@@ -9,15 +9,23 @@
     <context:component-scan base-package="com.dity.ssm.controller"></context:component-scan>
 
     <!-- 开启springmvc注解模式 -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!--静态资源默认servlet处理-->
-    <mvc:default-servlet-handler/>
+    <mvc:default-servlet-handler />
 
     <!--配置视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp" />
         <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.dity.ssm.config.DateConverter"></bean>
+            </list>
+        </property>
     </bean>
 
 </beans>

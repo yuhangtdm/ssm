@@ -1,9 +1,12 @@
 package com.dity.ssm.controller;
 
+import com.dity.ssm.config.CustomDeptEditor;
 import com.dity.ssm.entity.User;
 import com.dity.ssm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,4 +30,22 @@ public class UserController {
         return userService.getAll();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "getUser")
+    public User getUser(User user){
+       return user;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "save")
+    public User save(User user){
+        System.out.println(user);
+        return user;
+    }
+
+    @InitBinder
+    public void register(WebDataBinder webDataBinder){
+        webDataBinder.registerCustomEditor(User.class,new CustomDeptEditor());
+
+    }
 }
