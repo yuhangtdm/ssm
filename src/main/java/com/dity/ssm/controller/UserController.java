@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping("getAll")
+    @RequestMapping(value = "getAll",produces = {"application/json;charset=UTF-8"})
     public List<User> getAll(){
         return userService.getAll();
     }

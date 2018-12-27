@@ -1,7 +1,8 @@
 package com.dity.ssm.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
-
+@XmlRootElement(name="User")
 public class User {
 
     private long id;

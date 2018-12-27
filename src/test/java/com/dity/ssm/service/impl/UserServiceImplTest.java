@@ -1,8 +1,10 @@
 package com.dity.ssm.service.impl;
 
+import com.dity.ssm.aop.UserBeforeAdvice;
 import com.dity.ssm.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,10 +34,20 @@ public class UserServiceImplTest {
 
     @Test
     public void save() throws Exception {
+        userService.save("张三");
     }
 
     @Test
     public void update() throws Exception {
+    }
+
+    @Test
+    public void codeAop(){
+        ProxyFactory proxyFactory = new ProxyFactory();
+        proxyFactory.setTarget(new UserServiceImpl());
+        proxyFactory.addAdvice(new UserBeforeAdvice());
+        UserService userService = (UserService) proxyFactory.getProxy();
+        userService.getUserName();
     }
 
 }

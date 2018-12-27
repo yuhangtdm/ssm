@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getUserName() {
         logger.info("查询用户姓名");
-        // throw new RuntimeException("出现异常");
-         return "zs";
+         throw new RuntimeException("出现异常");
+//         return "zs";
     }
 
     @Override

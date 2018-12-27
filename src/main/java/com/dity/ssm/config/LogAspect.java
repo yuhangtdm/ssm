@@ -53,23 +53,26 @@ public class LogAspect {
     /**
      * 定义切入点表达式
      */
-    @Pointcut("execution(* com.dity.ssm.service.impl.*.*(..))")
+    @Pointcut("execution(* com.dity.ssm.service.UserService.*(..))")
     public void jp(){}
 
     /**
      * 前置通知 方法执行之前运行
+     * 配置了  && args(name)
+     * 当方法没有参数时  该前置通知不执行
      */
-    @Before("jp() && args(name)")
-    public void before(String name){
-        logger.info("aop前置通知,"+name);
+    @Before("jp()")
+    public void before(){
+        logger.info("aop前置通知");
     }
 
     /**
      * 返回通知 方法正常返回后运行
+     * ,returning = "result" 对于有返回值的方法可以获取返回值
      */
-//    @AfterReturning("jp()")
-    public void afterReturning(){
-        logger.info("aop返回通知");
+    @AfterReturning(value = "jp()",returning = "result")
+    public void afterReturning(String result){
+        logger.info("aop返回通知,"+result);
     }
 
     /**
@@ -82,10 +85,11 @@ public class LogAspect {
 
     /**
      * 异常通知 方法执行出现异常后运行
+     * throwing = "e" 可以获取异常的具体信息
      */
-//    @AfterThrowing("jp()")
-    public void throwException(){
-        logger.info("aop异常通知");
+    @AfterThrowing(value = "jp()",throwing = "e")
+    public void throwException(Exception e){
+        logger.error("aop异常通知,"+e.getMessage(),e);
     }
 
 //    @Around("jp()")

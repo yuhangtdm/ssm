@@ -11,8 +11,12 @@
         <context:exclude-filter type="custom" expression="com.dity.ssm.mapper"></context:exclude-filter>-->
     </context:component-scan>
 
-    <!--配置aop-->
-    <aop:aspectj-autoproxy proxy-target-class="false"/>
+    <!--配置aop
+    当配置为false 或者不配时 会根据要代理的对象为接口或类自动判断选择哪种代理
+    proxy-target-class 默认为false 使用java动态代理 基于接口
+    修改为true后 则强制使用cglib代理 基于类做代理
+    -->
+    <aop:aspectj-autoproxy proxy-target-class="false" />
 
 
     <import resource="springmvc.xml"/>
