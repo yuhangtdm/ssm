@@ -4,8 +4,17 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.dity.ssm.mapper.UserMapper">
 
-    <select id="getAll" resultType="com.dity.ssm.entity.User">
+    <select id="getAll" resultType="com.dity.ssm.entity.User" >
         SELECT * FROM user
     </select>
+
+    <select id="getMap" resultType="map" >
+        SELECT * FROM user
+    </select>
+
+    <insert id="insert" >
+        insert into user()
+        VALUES (#{id,jdbcType=VARCHAR})
+    </insert>
 
 </mapper>

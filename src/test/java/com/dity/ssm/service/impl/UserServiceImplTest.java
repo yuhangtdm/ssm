@@ -1,6 +1,8 @@
 package com.dity.ssm.service.impl;
 
 import com.dity.ssm.aop.UserBeforeAdvice;
+import com.dity.ssm.entity.User;
+import com.dity.ssm.mapper.UserMapper;
 import com.dity.ssm.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +10,8 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +25,9 @@ public class UserServiceImplTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void getAll() throws Exception {
@@ -48,6 +55,14 @@ public class UserServiceImplTest {
         proxyFactory.addAdvice(new UserBeforeAdvice());
         UserService userService = (UserService) proxyFactory.getProxy();
         userService.getUserName();
+    }
+
+    @Test
+    public void getMap(){
+        Map<Long, User> map = userMapper.getMap();
+        System.out.println(map);
+
+
     }
 
 }
